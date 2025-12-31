@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第三課・練習一：生詞連連看</title>
+  <style>
+    :root{
+      /* Lesson 3 – 更深一階 */
+      --card:#ffffff;
+      --bg:#7fa3c6;
+      --bg2:#5f89b2;
+      --ink:#050f1c;
+      --muted:#1f3448;
+      --brand:#1e293b;
+      --accent:#082f49;
+      --line:#557fa3;
+      --soft:#c5d9ea;
+      --good:#16a34a;
+      --bad:#dc2626;
+      --warn:#f59e0b;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg2), var(--bg));
+      color: var(--ink);
+    }
+    .wrap{ max-width: 980px; margin:0 auto; padding: 20px; }
+    .header{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom:14px;
+    }
+    .title{
+      font-size:26px; font-weight:950; margin:0;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .subtitle{
+      font-size:15px; font-weight:800; color:var(--muted); line-height:1.5; margin:0;
+    }
+    .stats{ display:flex; gap:10px; flex-wrap:wrap; }
+    .pill{
+      background:#f1f5f9; border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      font-weight:900; color:#0b2239;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 40px rgba(2,48,96,.28);
+    }
+    .hint{
+      font-size:14px; font-weight:900; color:var(--accent);
+      margin-bottom:12px; line-height:1.5;
+    }
+
+    .matchGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .column h3{
+      margin:0 0 8px;
+      font-size:18px; font-weight:950; color:var(--accent);
+      text-align:center;
+    }
+
+    .item{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:950;
+      margin-bottom:10px;
+      cursor:pointer;
+      text-align:center;
+      transition: background .2s ease, border-color .2s ease, transform .05s ease;
+      user-select:none;
+    }
+    .item:hover{ border-color:#93c5fd; background:#eef6ff; }
+    .item:active{ transform: scale(0.99); }
+
+    .item.selected{
+      background:#dbeafe;
+      border-color:#60a5fa;
+    }
+    .item.correct{
+      background:#dcfce7;
+      border-color:var(--good);
+      color:#14532d;
+      cursor:default;
+    }
+    .item.wrong{
+      background:#fee2e2;
+      border-color:var(--bad);
+      color:#7f1d1d;
+    }
+    .item.glow{
+      outline: 3px solid rgba(245, 158, 11, 0.6);
+      border-color: var(--warn);
+    }
+
+    .feedback{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--soft);
+      font-weight:900;
+      display:none;
+      white-space:pre-line;
+      line-height:1.45;
+    }
+    .feedback.ok{ display:block; background:#f0fdf4; color:#166534; border-color:#bbf7d0; }
+    .feedback.no{ display:block; background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+    .feedback.info{ display:block; background:#eff6ff; color:#0b3a66; border-color:#bfdbfe; }
+
+    .actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--brand);
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#ffffff; color:var(--brand); }
+    .btn.warn{ background:#b45309; border-color:#92400e; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    @media (max-width:600px){
+      .wrap{ padding:14px; }
+      .matchGrid{ grid-template-columns:1fr; }
+      .item{ padding:18px 16px; font-size:18px; }
+      .btn{ width:100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="title">
+        第三課・練習一：生詞連連看
+        <div class="subtitle">
+          把左邊的「生詞」和右邊的「意思」連起來。<br>
+          <span style="font-size:13px; color:#314e68;">
+            Match each word with its correct meaning.
+          </span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <span class="pill">完成：<span id="done">0</span>/<span id="total">0</span></span>
+        <span class="pill">錯誤：<span id="mistakes">0</span></span>
+        <span class="pill">提示：<span id="hintsLeft">2</span></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hint" id="hintText">
+        玩法：先點左邊一個生詞，再點右邊一個意思。<br>
+        自學小幫手：卡住可用「提示」或「看答案」。
+      </div>
+
+      <div class="matchGrid">
+        <div class="column" id="wordsCol">
+          <h3>生詞</h3>
+        </div>
+        <div class="column" id="meaningsCol">
+          <h3>意思</h3>
+        </div>
+      </div>
+
+      <div id="feedback" class="feedback"></div>
+
+      <div class="actions">
+        <button class="btn secondary" id="reshuffleBtn">重新洗牌</button>
+        <button class="btn secondary" id="checkBtn">檢查進度</button>
+        <button class="btn" id="hintBtn">提示（亮起正確意思）</button>
+        <button class="btn warn" id="answerBtn">看答案（完成全部）</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const PAIRS = [
+    { word:"意志", meaning:"面對困難不放棄的力量" },
+    { word:"生命", meaning:"活著的狀態" },
+    { word:"旱季", meaning:"沒雨、水很少的時期" },
+    { word:"獻上", meaning:"尊敬地把東西給某人" },
+    { word:"膽量", meaning:"不怕危險的勇氣" },
+    { word:"冷靜", meaning:"保持不慌張" },
+    { word:"拯救", meaning:"把人或事物從危險中救出" }
+  ];
+
+  const wordsCol = document.getElementById("wordsCol");
+  const meaningsCol = document.getElementById("meaningsCol");
+  const feedback = document.getElementById("feedback");
+
+  const doneEl = document.getElementById("done");
+  const totalEl = document.getElementById("total");
+  const mistakesEl = document.getElementById("mistakes");
+  const hintsLeftEl = document.getElementById("hintsLeft");
+
+  const reshuffleBtn = document.getElementById("reshuffleBtn");
+  const checkBtn = document.getElementById("checkBtn");
+  const hintBtn = document.getElementById("hintBtn");
+  const answerBtn = document.getElementById("answerBtn");
+
+  let selectedWord = null;
+  let selectedMeaning = null;
+
+  let matched = 0;
+  let mistakes = 0;
+  let hintsLeft = 2;
+
+  // Map for quick lookup
+  const meaningByWord = new Map(PAIRS.map(p => [p.word, p.meaning]));
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function setFeedback(type, text){
+    feedback.className = "feedback " + type;
+    feedback.textContent = text;
+  }
+
+  function clearTempStyles(){
+    document.querySelectorAll(".item").forEach(el=>{
+      el.classList.remove("wrong","glow","selected");
+    });
+  }
+
+  function updateStats(){
+    doneEl.textContent = matched;
+    totalEl.textContent = PAIRS.length;
+    mistakesEl.textContent = mistakes;
+    hintsLeftEl.textContent = hintsLeft;
+  }
+
+  function render(){
+    matched = 0;
+    mistakes = 0;
+    hintsLeft = 2;
+    selectedWord = null;
+    selectedMeaning = null;
+
+    updateStats();
+    setFeedback("info", "開始吧！完成全部配對就算通關。");
+
+    wordsCol.innerHTML = "<h3>生詞</h3>";
+    meaningsCol.innerHTML = "<h3>意思</h3>";
+
+    const wordList = shuffle(PAIRS.map(p => p.word));
+    const meaningList = shuffle(PAIRS.map(p => p.meaning));
+
+    wordList.forEach(w=>{
+      const d = document.createElement("div");
+      d.className = "item";
+      d.textContent = w;
+      d.dataset.word = w;
+      wordsCol.appendChild(d);
+    });
+
+    meaningList.forEach(m=>{
+      const d = document.createElement("div");
+      d.className = "item";
+      d.textContent = m;
+      d.dataset.meaning = m;
+      meaningsCol.appendChild(d);
+    });
+
+    bindEvents();
+  }
+
+  function bindEvents(){
+    document.querySelectorAll("#wordsCol .item").forEach(item=>{
+      item.onclick = ()=>{
+        if(item.classList.contains("correct")) return;
+        document.querySelectorAll("#wordsCol .item").forEach(i=>i.classList.remove("selected"));
+        item.classList.add("selected");
+        selectedWord = item;
+        tryMatch();
+      };
+    });
+
+    document.querySelectorAll("#meaningsCol .item").forEach(item=>{
+      item.onclick = ()=>{
+        if(item.classList.contains("correct")) return;
+        document.querySelectorAll("#meaningsCol .item").forEach(i=>i.classList.remove("selected"));
+        item.classList.add("selected");
+        selectedMeaning = item;
+        tryMatch();
+      };
+    });
+  }
+
+  function tryMatch(){
+    if(!selectedWord || !selectedMeaning) return;
+
+    const w = selectedWord.dataset.word;
+    const m = selectedMeaning.dataset.meaning;
+    const correctM = meaningByWord.get(w);
+
+    if(m === correctM){
+      selectedWord.className = "item correct";
+      selectedMeaning.className = "item correct";
+      matched++;
+      updateStats();
+
+      if(matched === PAIRS.length){
+        setFeedback("ok", "🎉 全部配對完成！你通關了！");
+      }else{
+        setFeedback("info", `✅ 配對正確！已完成 ${matched}/${PAIRS.length}`);
+      }
+    }else{
+      mistakes++;
+      updateStats();
+      selectedWord.classList.add("wrong");
+      selectedMeaning.classList.add("wrong");
+      setFeedback("no", "❌ 不正確，再試一次。");
+
+      setTimeout(()=>{
+        selectedWord.classList.remove("wrong","selected");
+        selectedMeaning.classList.remove("wrong","selected");
+      }, 650);
+    }
+
+    selectedWord = null;
+    selectedMeaning = null;
+  }
+
+  // ✅ 提示：選到某個生詞後，亮起正確意思 1 秒
+  function hint(){
+    if(hintsLeft <= 0){
+      setFeedback("no", "提示已用完。你可以繼續嘗試，或按「看答案」。");
+      return;
+    }
+    const wordEl = selectedWord;
+    if(!wordEl){
+      setFeedback("info", "先點左邊一個生詞，再按「提示」。");
+      return;
+    }
+    const w = wordEl.dataset.word;
+    const correctM = meaningByWord.get(w);
+
+    const target = Array.from(document.querySelectorAll("#meaningsCol .item"))
+      .find(el => el.dataset.meaning === correctM && !el.classList.contains("correct"));
+
+    if(!target){
+      setFeedback("info", "這個生詞好像已經配對完成了，換下一個吧！");
+      return;
+    }
+
+    hintsLeft--;
+    updateStats();
+    setFeedback("info", `💡 提示：請在右邊找出「亮起來」的意思。`);
+
+    target.classList.add("glow");
+    setTimeout(()=>target.classList.remove("glow"), 1100);
+  }
+
+  // ✅ 檢查進度
+  function checkProgress(){
+    if(matched === PAIRS.length){
+      setFeedback("ok", "🎉 你已完成全部配對！");
+    }else{
+      setFeedback("info", `目前完成：${matched}/${PAIRS.length}\n錯誤次數：${mistakes}\n提示剩餘：${hintsLeft}`);
+    }
+  }
+
+  // ✅ 看答案：直接完成全部（自學可用）
+  function showAnswer(){
+    // 把所有還沒配對的配起來
+    const wordEls = Array.from(document.querySelectorAll("#wordsCol .item"));
+    const meaningEls = Array.from(document.querySelectorAll("#meaningsCol .item"));
+
+    wordEls.forEach(wEl=>{
+      if(wEl.classList.contains("correct")) return;
+      const w = wEl.dataset.word;
+      const correctM = meaningByWord.get(w);
+      const mEl = meaningEls.find(el => el.dataset.meaning === correctM && !el.classList.contains("correct"));
+      if(mEl){
+        wEl.className = "item correct";
+        mEl.className = "item correct";
+      }
+    });
+
+    matched = PAIRS.length;
+    updateStats();
+    setFeedback("ok", "✅ 已顯示答案並完成全部配對。你可以按「重新洗牌」再練一次！");
+  }
+
+  // ✅ 重新洗牌：保留分數？（自學建議重練，所以直接重置）
+  function reshuffle(){
+    render();
+  }
+
+  // Buttons
+  reshuffleBtn.onclick = reshuffle;
+  checkBtn.onclick = checkProgress;
+  hintBtn.onclick = hint;
+  answerBtn.onclick = showAnswer;
+
+  // init
+  render();
+</script>
+</body>
+</html>
