@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第三課｜練習目錄</title>
+  <style>
+    :root{
+      /* Lesson 3 – 更深一階（比第二課深） */
+      --card:#ffffff;
+      --bg:#7fa3c6;
+      --bg2:#5f89b2;
+      --ink:#050f1c;
+      --muted:#1f3448;
+      --brand:#1e293b;
+      --accent:#082f49;
+      --line:#557fa3;
+      --soft:#c5d9ea;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg2), var(--bg));
+      color: var(--ink);
+    }
+
+    .wrap{
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header{ margin-bottom: 18px; }
+
+    .courseTag{
+      display:inline-block;
+      padding:6px 14px;
+      border-radius:999px;
+      background:#0b2239;
+      color:#e0f2fe;
+      font-weight:900;
+      font-size:14px;
+      margin-bottom:8px;
+      border:1px solid rgba(255,255,255,.25);
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:950;
+      margin:0 0 6px;
+      line-height:1.2;
+    }
+
+    .enTitle{
+      font-size:16px;
+      font-weight:800;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .subtitle{
+      font-size:15px;
+      font-weight:800;
+      color:var(--muted);
+      line-height:1.5;
+      margin-top:10px;
+    }
+
+    .enSub{
+      font-size:13px;
+      font-weight:800;
+      color:#2e4a63;
+      margin-top:6px;
+      line-height:1.5;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap:16px;
+      margin-top:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 40px rgba(2,48,96,.30);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .card h3{
+      margin:0;
+      font-size:20px;
+      font-weight:950;
+      color:var(--accent);
+      line-height:1.2;
+    }
+
+    .card .enH{
+      display:block;
+      margin-top:6px;
+      font-size:13px;
+      font-weight:800;
+      color:var(--muted);
+    }
+
+    .desc{
+      font-size:14px;
+      font-weight:800;
+      color:var(--muted);
+      line-height:1.6;
+      margin:0;
+    }
+
+    .desc .enD{
+      display:block;
+      margin-top:6px;
+      font-size:12px;
+      font-weight:800;
+      color:#2e4a63;
+      line-height:1.5;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .tag{
+      font-size:12px;
+      font-weight:900;
+      padding:4px 10px;
+      border-radius:999px;
+      background:var(--soft);
+      border:1px solid var(--line);
+      color:#0b2239;
+    }
+
+    .actions{
+      margin-top:auto;
+      display:flex;
+      gap:10px;
+    }
+
+    .btn{
+      flex:1;
+      text-align:center;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--brand);
+      color:#fff;
+      text-decoration:none;
+      font-weight:900;
+      border:1px solid #0b2239;
+    }
+
+    .footer{
+      margin-top:24px;
+      font-size:13px;
+      font-weight:800;
+      color:#0b2239;
+      text-align:center;
+      opacity:.9;
+    }
+
+    @media (max-width:600px){
+      .wrap{ padding:14px; }
+      .title{ font-size:24px; }
+      .btn{ padding:14px 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="courseTag">Lesson 3</div>
+
+      <h1 class="title">
+        第三課｜練習目錄
+        <div class="enTitle">Lesson 3: Practice Menu</div>
+      </h1>
+
+      <div class="subtitle">
+        本課練習包含「連連看、語法填空、閱讀理解」。<br>
+        依序完成可以更好地自學與複習。
+        <div class="enSub">
+          This lesson includes matching, grammar completion, and reading comprehension.<br>
+          Complete them in order for effective self-study and review.
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- 練習一 -->
+      <div class="card">
+        <h3>
+          練習一｜生詞連連看
+          <span class="enH">Practice 1: Vocabulary Matching</span>
+        </h3>
+        <p class="desc">
+          把左邊的生詞和右邊的意思配對。
+          <span class="enD">Match each word with its correct meaning.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">連連看</span>
+          <span class="tag">生詞</span>
+          <span class="tag">自學</span>
+        </div>
+        <div class="actions">
+          <a class="btn" href="quiz3-1.html">開始 Start</a>
+        </div>
+      </div>
+
+      <!-- 練習二 -->
+      <div class="card">
+        <h3>
+          練習二｜語法填空
+          <span class="enH">Practice 2: Grammar Completion</span>
+        </h3>
+        <p class="desc">
+          選擇合適的語法填入句子空格。
+          <span class="enD">Choose the correct grammar pattern for each sentence.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">語法</span>
+          <span class="tag">填空</span>
+          <span class="tag">練習</span>
+        </div>
+        <div class="actions">
+          <a class="btn" href="quiz3-2.html">開始 Start</a>
+        </div>
+      </div>
+
+      <!-- 練習三 -->
+      <div class="card">
+        <h3>
+          練習三｜閱讀理解
+          <span class="enH">Practice 3: Reading Comprehension</span>
+        </h3>
+        <p class="desc">
+          閱讀短文後回答問題，理解重點內容。
+          <span class="enD">Read the passage and choose the correct answers.</span>
+        </p>
+        <div class="tags">
+          <span class="tag">閱讀</span>
+          <span class="tag">理解</span>
+          <span class="tag">選擇題</span>
+        </div>
+        <div class="actions">
+          <a class="btn" href="quiz3-3.html">開始 Start</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      第三課練習目錄｜Lesson 3 Practice Menu
+    </div>
+  </div>
+</body>
+</html>
