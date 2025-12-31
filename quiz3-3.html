@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第三課・練習三：閱讀理解</title>
+  <style>
+    :root{
+      /* Lesson 3 – 深藍（比第二課再深） */
+      --card:#ffffff;
+      --bg:#7fa3c6;
+      --bg2:#5f89b2;
+      --ink:#050f1c;
+      --muted:#1f3448;
+      --brand:#1e293b;
+      --accent:#082f49;
+      --line:#557fa3;
+      --soft:#c5d9ea;
+      --good:#16a34a;
+      --bad:#dc2626;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg2), var(--bg));
+      color: var(--ink);
+    }
+    .wrap{ max-width: 980px; margin:0 auto; padding: 20px; }
+
+    .header{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom:14px;
+    }
+    .title{
+      font-size:26px; font-weight:950; margin:0;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .subtitle{
+      font-size:15px; font-weight:800; color:var(--muted); line-height:1.5; margin:0;
+    }
+    .stats{ display:flex; gap:10px; flex-wrap:wrap; }
+    .pill{
+      background:#f1f5f9; border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      font-weight:900; color:#0b2239;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 40px rgba(2,48,96,.28);
+    }
+
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#f1f5f9;
+      border:1px solid var(--line);
+      font-weight:900;
+      color:var(--accent);
+      margin-bottom:10px;
+    }
+
+    .reading{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:var(--soft);
+      padding:14px;
+      font-weight:850;
+      line-height:1.75;
+      margin-bottom:14px;
+    }
+    .reading p{ margin:0 0 10px; }
+    .reading p:last-child{ margin-bottom:0; }
+
+    .qno{ color:var(--accent); font-weight:950; }
+    .question{
+      font-size:18px;
+      font-weight:950;
+      margin:10px 0 12px;
+      line-height:1.45;
+    }
+
+    .options{ display:grid; gap:10px; }
+
+    button.opt{
+      width:100%;
+      text-align:left;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:900;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      transition: transform .05s ease, border-color .2s ease, background .2s ease;
+    }
+    button.opt:hover{ border-color:#93c5fd; background:#f8fafc; }
+    button.opt:active{ transform: scale(0.99); }
+    button.opt:disabled{ opacity:.92; cursor:not-allowed; }
+
+    .key{
+      width:30px; height:30px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#f1f5f9;
+      display:grid; place-items:center;
+      font-weight:950;
+      flex:0 0 auto;
+      margin-top:1px;
+    }
+
+    .feedback{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--soft);
+      display:none;
+      font-weight:950;
+      white-space:pre-line;
+      line-height:1.45;
+    }
+    .feedback.ok{ display:block; background:#f0fdf4; color:#166534; border-color:#bbf7d0; }
+    .feedback.no{ display:block; background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+    .feedback.info{ display:block; background:#eff6ff; color:#0b3a66; border-color:#bfdbfe; }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn{
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--brand);
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:var(--brand); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    @media (max-width:600px){
+      .wrap{ padding:14px; }
+      button.opt{ font-size:18px; padding:18px 16px; }
+      .key{ width:38px; height:38px; font-size:16px; }
+      .btn{ width:100%; }
+      .actions{ justify-content:stretch; }
+      .title{ font-size:24px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="title">
+        第三課・練習三：閱讀理解
+        <div class="subtitle">
+          閱讀短文後，選出正確答案。<br>
+          <span style="font-size:13px; color:#314e68;">
+            Read the passage and choose the correct answer.
+          </span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <span class="pill">分數：<span id="score">0</span></span>
+        <span class="pill">進度：<span id="progress">0/0</span></span>
+      </div>
+    </div>
+
+    <div class="card" id="card"></div>
+  </div>
+
+<script>
+  const PASSAGE = [
+    "去年夏天，村子遇到旱季。很久沒有下雨，河水變少，農作物都快枯死了。",
+    "這不只生活有困難，也關係到生命。有些人開始失去希望，但阿山沒放棄。他相信只要大家團結，就一定能找到方法。",
+    "阿山帶大家整理水源，並幫助老人和孩子。這給村子帶來希望。若沒有他，情況會更糟。最後村民成功拯救了自己的家。"
+  ];
+
+  const QUESTIONS = [
+    {
+      q: "村子遇到的主要問題是什麼？",
+      options: [
+        { text:"下雨太多", correct:false },
+        { text:"旱季太長", correct:true },
+        { text:"人口太少", correct:false },
+        { text:"食物太多", correct:false }
+      ],
+      explain: "短文第一段說「很久沒有下雨，河水變少」，屬於旱季問題。"
+    },
+    {
+      q: "阿山為什麼很重要？",
+      options: [
+        { text:"他很有錢", correct:false },
+        { text:"他要就業", correct:false },
+        { text:"他離開村子", correct:false },
+        { text:"他帶大家找水", correct:true }
+      ],
+      explain: "短文第三段說阿山帶大家整理水源，幫助村子度過困難。"
+    }
+  ];
+
+  let idx = 0;
+  let score = 0;
+  let locked = false;
+
+  const card = document.getElementById("card");
+  const scoreEl = document.getElementById("score");
+  const progressEl = document.getElementById("progress");
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderStart(){
+    progressEl.textContent = `0/${QUESTIONS.length}`;
+    card.innerHTML = `
+      <div class="tag">閱讀短文</div>
+      <div class="reading">
+        ${PASSAGE.map(p=>`<p>${p}</p>`).join("")}
+      </div>
+      <div class="actions" style="justify-content:flex-end;">
+        <button class="btn" id="startBtn">開始作答</button>
+      </div>
+      <div class="feedback info">
+        提醒：每題選項會洗牌；答完會出現解釋，幫你自我檢查。
+      </div>
+    `;
+    document.getElementById("startBtn").onclick = () => {
+      idx = 0;
+      renderQuestion();
+    };
+  }
+
+  function renderQuestion(){
+    locked = false;
+
+    const q = QUESTIONS[idx];
+    const qno = idx + 1;
+    progressEl.textContent = `${qno}/${QUESTIONS.length}`;
+
+    const opts = shuffle(q.options);
+    const keys = ["A","B","C","D"];
+
+    card.innerHTML = `
+      <div class="tag">選擇題</div>
+      <div class="qno">第 ${qno} 題</div>
+      <div class="question">${q.q}</div>
+
+      <div class="options">
+        ${opts.map((o,i)=>`
+          <button class="opt" data-correct="${o.correct}">
+            <span class="key">${keys[i]}</span>
+            <span>${o.text}</span>
+          </button>
+        `).join("")}
+      </div>
+
+      <div id="feedback" class="feedback"></div>
+
+      <div class="actions">
+        <button class="btn secondary" id="backBtn">回到短文</button>
+        <button class="btn" id="nextBtn" disabled>${qno === QUESTIONS.length ? "完成" : "下一題"}</button>
+      </div>
+    `;
+
+    const fb = document.getElementById("feedback");
+    const nextBtn = document.getElementById("nextBtn");
+
+    // 選項點擊
+    document.querySelectorAll(".opt").forEach(btn=>{
+      btn.onclick = ()=>{
+        if(locked) return;
+        locked = true;
+
+        const ok = btn.dataset.correct === "true";
+        if(ok){
+          score++;
+          scoreEl.textContent = score;
+          fb.className = "feedback ok";
+          fb.textContent = "✅ 答對了！\n" + q.explain;
+        }else{
+          fb.className = "feedback no";
+          fb.textContent = "❌ 答錯了。\n" + q.explain;
+        }
+
+        // 禁用全部
+        document.querySelectorAll(".opt").forEach(b=>b.disabled=true);
+        // 標出正確選項邊框
+        document.querySelectorAll(".opt").forEach(b=>{
+          if(b.dataset.correct === "true") b.style.borderColor = "var(--good)";
+        });
+
+        nextBtn.disabled = false;
+      };
+    });
+
+    document.getElementById("backBtn").onclick = renderStart;
+
+    nextBtn.onclick = () => {
+      if(idx < QUESTIONS.length - 1){
+        idx++;
+        renderQuestion();
+      }else{
+        renderEnd();
+      }
+    };
+  }
+
+  function renderEnd(){
+    progressEl.textContent = `${QUESTIONS.length}/${QUESTIONS.length}`;
+    card.innerHTML = `
+      <div class="tag">完成</div>
+      <div class="reading" style="background:#f0fdf4; border-color:#bbf7d0;">
+        🎉 你完成第三課練習三！<br>
+        得分：<b style="color:#166534;">${score}</b> / ${QUESTIONS.length}
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" id="restartBtn">再做一次</button>
+        <button class="btn" id="reviewBtn">回到短文</button>
+      </div>
+    `;
+    document.getElementById("restartBtn").onclick = () => {
+      score = 0;
+      scoreEl.textContent = score;
+      renderStart();
+    };
+    document.getElementById("reviewBtn").onclick = renderStart;
+  }
+
+  // init
+  renderStart();
+</script>
+</body>
+</html>
