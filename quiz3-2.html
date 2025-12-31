@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第三課・練習二：語法填空</title>
+  <style>
+    :root{
+      /* Lesson 3 – 深藍 */
+      --card:#ffffff;
+      --bg:#7fa3c6;
+      --bg2:#5f89b2;
+      --ink:#050f1c;
+      --muted:#1f3448;
+      --brand:#1e293b;
+      --accent:#082f49;
+      --line:#557fa3;
+      --soft:#c5d9ea;
+      --good:#16a34a;
+      --bad:#dc2626;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg2), var(--bg));
+      color: var(--ink);
+    }
+    .wrap{ max-width: 980px; margin:0 auto; padding: 20px; }
+    .header{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px; flex-wrap:wrap; margin-bottom:14px;
+    }
+    .title{
+      font-size:26px; font-weight:950; margin:0;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .subtitle{
+      font-size:15px; font-weight:800; color:var(--muted); line-height:1.5; margin:0;
+    }
+    .stats{ display:flex; gap:10px; flex-wrap:wrap; }
+    .pill{
+      background:#f1f5f9; border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      font-weight:900; color:#0b2239;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 40px rgba(2,48,96,.28);
+    }
+
+    .tag{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#f1f5f9;
+      border:1px solid var(--line);
+      font-weight:900;
+      color:var(--accent);
+      margin-bottom:10px;
+    }
+
+    .bank{
+      display:flex; flex-wrap:wrap; gap:8px;
+      padding:10px;
+      border:1px dashed #94a3b8;
+      border-radius:14px;
+      background:var(--soft);
+      margin-bottom:12px;
+    }
+    .chip{
+      padding:6px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      font-weight:950;
+      font-size:14px;
+    }
+
+    .list{ display:grid; gap:10px; }
+
+    .item{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      line-height:1.6;
+    }
+
+    .label{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:#f1f5f9;
+      border:1px solid var(--line);
+      font-weight:950;
+      color:var(--accent);
+      flex:0 0 auto;
+    }
+
+    select{
+      appearance:none;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:950;
+      min-width: 180px;
+      background:#fff;
+    }
+
+    .feedback{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--soft);
+      display:none;
+      font-weight:950;
+      white-space:pre-line;
+      line-height:1.45;
+    }
+    .feedback.ok{ display:block; background:#f0fdf4; color:#166534; border-color:#bbf7d0; }
+    .feedback.no{ display:block; background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+    .feedback.info{ display:block; background:#eff6ff; color:#0b3a66; border-color:#bfdbfe; }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn{
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:var(--brand);
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .btn.secondary{ background:#fff; color:var(--brand); }
+
+    @media (max-width:600px){
+      .wrap{ padding:14px; }
+      select{ width:100%; min-width: unset; }
+      .btn{ width:100%; }
+      .actions{ justify-content:stretch; }
+      .title{ font-size:24px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="title">
+        第三課・練習二：語法填空
+        <div class="subtitle">
+          在句中空白處填入適合的語法。<br>
+          <span style="font-size:13px; color:#314e68;">
+            Choose the correct grammar pattern for each sentence.
+          </span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <span class="pill">得分：<span id="score">0</span>/4</span>
+      </div>
+    </div>
+
+    <div class="card" id="card"></div>
+  </div>
+
+<script>
+  // ✅ 語法辭庫（顯示用）
+  const PATTERNS = [
+    "若…就…",
+    "對…來說…",
+    "給…帶來…",
+    "跟…比起來…"
+  ];
+
+  // ✅ 題目（依圖片）
+  // 用「answer」指定正解語法
+  const QUESTIONS = [
+    {
+      id: "A",
+      text: "這次合作＿＿＿大家＿＿＿新的希望。",
+      answer: "給…帶來…"
+    },
+    {
+      id: "B",
+      text: "＿＿＿學生＿＿＿，考試是一種挑戰。",
+      answer: "對…來說…"
+    },
+    {
+      id: "C",
+      text: "＿＿＿下雨＿＿＿，活動就取消。",
+      answer: "若…就…"
+    },
+    {
+      id: "D",
+      text: "＿＿＿去年＿＿＿，今年比較乾燥。",
+      answer: "跟…比起來…"
+    }
+  ];
+
+  const card = document.getElementById("card");
+  const scoreEl = document.getElementById("score");
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function render(){
+    scoreEl.textContent = "0";
+
+    const bankHTML = PATTERNS.map(p => `<span class="chip">${p}</span>`).join("");
+
+    const listHTML = QUESTIONS.map((q, idx) => {
+      // 每題選項洗牌
+      const opts = shuffle(PATTERNS).map(p => `<option value="${p}">${p}</option>`).join("");
+      return `
+        <div class="item">
+          <div class="label">${q.id}</div>
+          <div style="flex:1 1 260px;">
+            ${q.text}
+          </div>
+          <select data-idx="${idx}">
+            <option value="">（選擇語法）</option>
+            ${opts}
+          </select>
+        </div>
+      `;
+    }).join("");
+
+    card.innerHTML = `
+      <div class="tag">語法選擇</div>
+
+      <div class="bank" aria-label="patterns">
+        ${bankHTML}
+      </div>
+
+      <div class="list">
+        ${listHTML}
+      </div>
+
+      <div id="feedback" class="feedback info">
+        提醒：每題選項已洗牌，請依句意選擇最合適的語法。
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary" id="reshuffleBtn">重新洗牌選項</button>
+        <button class="btn" id="checkBtn">送出檢查</button>
+      </div>
+    `;
+
+    document.getElementById("reshuffleBtn").onclick = render;
+    document.getElementById("checkBtn").onclick = check;
+  }
+
+  function check(){
+    const selects = Array.from(document.querySelectorAll("select"));
+    let correct = 0;
+    const report = [];
+
+    selects.forEach((sel, i)=>{
+      const picked = sel.value;
+      const ans = QUESTIONS[i].answer;
+      if(picked === ans){
+        correct++;
+        report.push(`${QUESTIONS[i].id} ✅`);
+      }else{
+        report.push(`${QUESTIONS[i].id} ❌（正解：${ans}）`);
+      }
+    });
+
+    scoreEl.textContent = String(correct);
+
+    const fb = document.getElementById("feedback");
+    if(correct === QUESTIONS.length){
+      fb.className = "feedback ok";
+      fb.textContent = `🎉 全部正確！ ${correct}/${QUESTIONS.length}\n\n${report.join("｜")}`;
+    }else{
+      fb.className = "feedback no";
+      fb.textContent = `完成：${correct}/${QUESTIONS.length}\n\n${report.join("｜")}`;
+    }
+  }
+
+  render();
+</script>
+</body>
+</html>
